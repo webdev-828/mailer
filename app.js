@@ -13,9 +13,8 @@ var mailRouter = require('./routes/mail');
 
 var app = express();
 
-if (process.env.NODE_ENV != 'production') {
   dotenv.config({ path: path.resolve(__dirname, '.env') });
-}
+
 
 console.log(process.env.MONGODB_URI);
 
