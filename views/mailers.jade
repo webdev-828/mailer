@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    div
+        h1#title Mailers
+        table#customers
+            thead
+            tr
+                th name
+                th email
+                th number
+                th message
+            tbody
+            each mailer, i in mailers
+                tr
+                    td #{mailer.sender_name}
+                    td #{mailer.email}
+                    td #{mailer.phone}
+                    td #{mailer.message}
+                    
+
