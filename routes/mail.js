@@ -21,10 +21,11 @@ router.post('/contact', function(req, res, next) {
         text: req.body.mail.message
     };
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    console.log(process.env.SENDGRID_API_KEY)
 
     sgMail
     .send(msg)
-    .then(() => {
+    .then((response) => {
         var newMail = new Mail({
             sender_name: req.body.mail.name,
             email: req.body.mail.email,
@@ -36,7 +37,7 @@ router.post('/contact', function(req, res, next) {
             if (err) {
                 return res.status(500).json({ message: 'Add Mail Error', error: err });
             }
-            res.status(200).json({ message: 'Mail saved successfully!' });
+            res.status(200).json({ message: 'Mail saved successfully!', response: response });
         })
     }, console.error);
 });
