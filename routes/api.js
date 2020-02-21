@@ -4,8 +4,13 @@ var axios = require('axios');
 var router = express.Router();
 var Mail = require('../model/mail');
 var Visitor = require('../model/visitor');
+var Resume = require('../resume');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+router.get('/resume', function(req, res, next) {
+    return res.status(200).json({resume: Resume});
+});
 
 router.get('/mails', function(req, res, next) {
     Mail.find({}, function (err, mailers) {
