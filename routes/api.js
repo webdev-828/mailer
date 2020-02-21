@@ -42,23 +42,21 @@ router.post('/addContact', function(req, res, next) {
         text: req.body.mail.message
     };
 
-    sgMail
-    .send(msg)
-    .then((response) => {
-        var newMail = new Mail({
-            sender_name: req.body.mail.name,
-            email: req.body.mail.email,
-            phone: req.body.mail.number,
-            message: req.body.mail.message
-        });
-    
-        newMail.save(function(err) {
-            if (err) {
-                return res.status(500).json({ message: 'Add Mail Error', error: err });
-            }
-            res.status(200).json({ message: 'Mail saved successfully!', response: response });
-        })
-    }, console.error);
+    sgMail.send(msg);
+
+    var newMail = new Mail({
+        sender_name: req.body.mail.name,
+        email: req.body.mail.email,
+        phone: req.body.mail.number,
+        message: req.body.mail.message
+    });
+
+    newMail.save(function(err) {
+        if (err) {
+            return res.status(500).json({ message: 'Add Mail Error', error: err });
+        }
+        res.status(200).json({ message: 'Mail saved successfully!'});
+    })
 });
 
 router.post('/addVisitor', function(req, res, next) {
@@ -79,13 +77,14 @@ router.post('/addVisitor', function(req, res, next) {
             };
 
             sgMail.send(msg);
-            
+
             var newVisitor = new Visitor({
                 ip: ip,
                 country: country,
                 state: state,
                 city: state,
-                name: name
+                name: name,
+                visited_on: Date.now()
             });
         
             newVisitor.save(function(err) {
@@ -98,23 +97,23 @@ router.post('/addVisitor', function(req, res, next) {
     })
 });
 
-router.delete('/', function(req, res) {
-    Visitor.remove({}, function(err, data) {
-        if (err)
-            return res.status(500).json({ message: 'Error', error: err });
+router.delete('/deleteVisitors/:id', function(req, res, next) {
+    const id = req.params.id;
 
-        res.status(200).json({});
-    });
+    if (id === 'undefined') {
+        Visitor.remove({}, function(err, data) {
+            if (err)
+                return res.status(500).json({ message: 'Error', error: err });
+            res.status(200).json({message: 'OK'})
+        });
+    } else {
+        Visitor.remove({_id: id}, function (err, data) {
+            if (err) 
+                return res.status(500).json({ message: 'Error', error: err });
+            res.status(200).json({message: 'OK', id: id})
+        });
+    }
 });
-
-// router.delete('/', function(req, res) {
-//     TrackContent.remove({}, function(err, data) {
-//         if (err)
-//             return res.status(500).json({ message: 'Error', error: err });
-
-//         res.status(200).json({});
-//     });
-// });
 
 const getAddress = (ip) => {
     return new Promise((resolve) => 
