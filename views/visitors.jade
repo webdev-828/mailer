@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    div
+        h1#title Visitors
+        table#customers
+            thead
+            tr
+                th Ip
+                th Country
+                th State
+                th City
+                th Name
+            tbody
+            each visitor, i in visitors
+                tr
+                    td #{visitor.ip}
+                    td #{visitor.country}
+                    td #{visitor.state}
+                    td #{visitor.city}
+                    td #{visitor.name}
+                    
+
