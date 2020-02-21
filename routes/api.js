@@ -78,24 +78,22 @@ router.post('/addVisitor', function(req, res, next) {
                 text: message
             };
 
-            sgMail
-            .send(msg)
-            .then((response) => {
-                var newVisitor = new Visitor({
-                    ip: ip,
-                    country: country,
-                    state: state,
-                    city: state,
-                    name: name
-                });
+            sgMail.send(msg);
             
-                newVisitor.save(function(err) {
-                    if (err) {
-                        return res.status(500).json({ message: 'Add Visitor Error', error: err });
-                    }
-                    res.status(200).json({ message: 'Visitor saved successfully!', response: response });
-                })
-            }, console.error);
+            var newVisitor = new Visitor({
+                ip: ip,
+                country: country,
+                state: state,
+                city: state,
+                name: name
+            });
+        
+            newVisitor.save(function(err) {
+                if (err) {
+                    return res.status(500).json({ message: 'Add Visitor Error', error: err });
+                }
+                res.status(200).json({ message: 'Visitor saved successfully!', response: response });
+            })
         }
     })
 });
