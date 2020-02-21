@@ -65,8 +65,8 @@ router.post('/addContact', function(req, res, next) {
 });
 
 router.post('/addVisitor', function(req, res, next) {
-    // const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const ip = '59.45.63.242';
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    // const ip = '59.45.63.242';
     const { name } = req.body;
     
     getAddress(ip).then(response => {
